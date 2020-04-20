@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+{% block content %}
+{% load static %}
+
+        <!-- Single Content -->
+        <div id="content" class="site-content center-relative">
+            <div class="single-post-wrapper content-1070 center-relative">
+
+                <article class="center-relative">
+                    <h2>새 글 작성하기</h2>
+                    {% load widget_tweaks %} <!--장고에게 widget_tweaks을 사용하겠다고 알려줌-->
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!--blog/views/PostCreate 의 필드를 한 번에 하나씩 필드라는 이름으로 가져고 옴-->
+                        {% for field in form.visible_fields %}
+                        <div class="form-group"> <!--form 그룹으로 묶어주고 -->
+                            <label for={{field.id_for_label}}>{{field.label}}</label>
+                            <!--부트스트랩에서 지원하는 form-control를 추가함 -->
+                            {{field|add_class:'form-control'}} 
+                            <!-- 필드에서 에러가 발생하면 부트스트랩의 help-blok을 작동하도록 함 -->
+                            {% for error in field.errors %}
+                                <span class="help-block">{{error}}</span>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                        <input type="submit" value="작성 완료">
+                    </form>
+                    <div class="clear"></div>
+                </article>
+            </div>
+        </div>
+        
+{% endblock %}
